@@ -8,7 +8,7 @@ import json
 import ctypes
 import fnmatch
 import multiprocessing
-from tqdm import tqdm
+from tqdm.auto import tqdm, trange
 
 from typing import (
     List,
@@ -517,7 +517,7 @@ class Llama:
         assert self._batch.batch is not None
         self._ctx.kv_cache_seq_rm(-1, self.n_tokens, -1)
 
-        for i in tqdm(range(0, len(tokens), self.n_batch),desc="Prompt evaluation"):
+        for i in trange(0, len(tokens), self.n_batch,bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt}',desc="Prompt evaluation"):
             batch = tokens[i : min(len(tokens), i + self.n_batch)]
             n_past = self.n_tokens
             n_tokens = len(batch)
